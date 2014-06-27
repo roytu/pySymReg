@@ -38,6 +38,9 @@ class Node(object):
     def addThreshold(self, thresholdInc):
         self.threshold += thresholdInc
 
+    def addLinkWeight(self, other, weightInc):
+        return self.links[other].setWeight(self.links[other].getWeight() + weightInc)
+
     def link(self, other, weight):
         # self is input, other is output
         self.outputs.append(other)
@@ -45,9 +48,6 @@ class Node(object):
         link = Link(self, other, weight)
         self.links[other] = link
         other.links[self] = link
-
-    def addLinkWeight(self, other, weightInc):
-        return self.links[other].setWeight(self.links[other].getWeight() + weightInc)
 
     # Propagates signal
     def reset(self):
