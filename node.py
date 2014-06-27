@@ -4,7 +4,7 @@ from activation_functions import fnSigmoid
 """
 Node object
 
-Node(op, state=0)
+Node(state=0)
 Creates a node with function op, which takes arbitrarily many values
 of the form (state, weight) and returns a number
 
@@ -26,13 +26,12 @@ Fire this state, processing inputs and setting self.state,
 as well as firing all connected output nodes
 """
 class Node(object):
-    def __init__(self, op, state=0, threshold=0, activationFn=fnSigmoid(1)):
+    def __init__(self, state=0, threshold=0, activationFn=fnSigmoid(1)):
         self.inputs = []
         self.outputs = []
         self.links = {}
         self.threshold = threshold
         self.activationFn = activationFn
-        self.op = op
         self.state = state
 
     def addThreshold(self, thresholdInc):
@@ -57,7 +56,8 @@ class Node(object):
 
     # Propagates signal
     def fire(self):
-        self.state = self.op(*[(i.state, self.getLinkWeight(i)) for i in self.inputs])
+        potential = sum([i.state * self.links[i].getWeight() for i in self.inputs]) + self.threshold
+        self.state = self.activationFn(potential)
         for output in self.outputs:
             output.fire()
 
