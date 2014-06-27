@@ -1,4 +1,5 @@
 from link import Link
+from activation_functions import fnSigmoid
 
 """
 Node object
@@ -6,6 +7,9 @@ Node object
 Node(op, state=0)
 Creates a node with function op, which takes arbitrarily many values
 of the form (state, weight) and returns a number
+
+addThreshold(thresholdInc)
+Increase the threshold by some value
 
 link(other, weight)
 Link self to other, where self is input and other is output
@@ -25,12 +29,17 @@ Fire this state, processing inputs and setting self.state,
 as well as firing all connected output nodes
 """
 class Node(object):
-    def __init__(self, op, state=0):
+    def __init__(self, op, state=0, threshold=0, activationFn=fnSigmoid(1)):
         self.inputs = []
         self.outputs = []
         self.links = {}
+        self.threshold = threshold
+        self.activationFn = activationFn
         self.op = op
         self.state = state
+
+    def addThreshold(self, thresholdInc):
+        self.threshold += thresholdInc
 
     def link(self, other, weight):
         # self is input, other is output
