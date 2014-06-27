@@ -8,7 +8,7 @@ class Tests(object):
         outputs = [ONode(x) for x in [0] * 3]
         for i in inputs:
             for o in outputs:
-                i.link(o, 3)
+                i.link(o, 0)
         net = Network(inputs, outputs)
         print(net)
         net.fireAll()

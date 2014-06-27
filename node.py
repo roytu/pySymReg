@@ -4,7 +4,7 @@ from activation_functions import fnSigmoid
 """
 Node object
 
-Node(state=0)
+Node(state=0, threshold=0, activationFn=fnSigmoid(1))
 Creates a node with function op, which takes arbitrarily many values
 of the form (state, weight) and returns a number
 
