@@ -15,11 +15,8 @@ link(other, weight)
 Link self to other, where self is input and other is output
 Other node is also linked to self
 
-setLinkWeight(other, weight)
-Set weight of link from self to other
-
-getLinkWeight(other)
-Get weight of link from self to other
+addLinkWeight(other, weight)
+Add some value to self-to-other link weight
 
 reset()
 Reset state to 0 as well as all outputs connected to this node
@@ -49,11 +46,8 @@ class Node(object):
         self.links[other] = link
         other.links[self] = link
 
-    def getLinkWeight(self, other):
-        return self.links[other].getWeight()
-
-    def setLinkWeight(self, other, weight):
-        self.links[other].setWeight(weight)
+    def addLinkWeight(self, other, weightInc):
+        return self.links[other].setWeight(self.links[other].getWeight() + weightInc)
 
     # Propagates signal
     def reset(self):
