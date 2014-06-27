@@ -31,7 +31,7 @@ class Node(object):
         self.outputs = []
         self.links = {}
         self.threshold = threshold
-        self.activationFn = activationFn
+        self.activationFn, self.delActivationFn = activationFn
         self.state = state
 
     def addThreshold(self, thresholdInc):
