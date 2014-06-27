@@ -11,12 +11,12 @@ of the form (state, weight) and returns a number
 addThreshold(thresholdInc)
 Increase the threshold by some value
 
+addLinkWeight(other, weight)
+Add some value to self-to-other link weight
+
 link(other, weight)
 Link self to other, where self is input and other is output
 Other node is also linked to self
-
-addLinkWeight(other, weight)
-Add some value to self-to-other link weight
 
 reset()
 Reset state to 0 as well as all outputs connected to this node
