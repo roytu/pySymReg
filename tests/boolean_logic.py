@@ -22,7 +22,7 @@ def testXOR():
                             ([0, 1], [1], [lambda x: x > 0.5], "XOR Gate, with inputs 0 1"),
                             ([1, 0], [1], [lambda x: x > 0.5], "XOR Gate, with inputs 1 0"),
                             ([1, 1], [0], [lambda x: x < 0.5], "XOR Gate, with inputs 1 1")
-                         ])
+                         ], cycles=50)
 
 def testBooleanLogic():
     testOR()
