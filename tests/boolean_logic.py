@@ -97,7 +97,7 @@ def testXOR():
             inputs[1].setState(i1)
             outputs[0].setExpectation(ex)
             net.fireAll()
-            net.backpropagate(2)
+            net.backpropagate(0.9)
 
     # Error rates
     inputs[0].setState(0)
