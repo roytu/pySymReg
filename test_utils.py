@@ -35,7 +35,7 @@ def testNetwork(inputCount, hiddensCount, outputCount, patterns, cycles=1000, le
     net = Network(inputs, outputs)
 
     # Training
-    for _ in range(cycles):
+    for cycle in range(1, cycles + 1):
         for (inputStates, exps, _, _) in patterns:
             for (s, i) in zip(inputStates, inputs):
                 i.setState(s)
@@ -63,8 +63,12 @@ def testNetwork(inputCount, hiddensCount, outputCount, patterns, cycles=1000, le
             i.setState(s)
         net.fireAll()
         for (out, cond) in zip(map(lambda o: o.state, outputs), conds):
-            testResult(cond(out), failureString)
+            if not testResult(cond(out), failureString):
+                return
+    print("Passed after {0} cycles".format(cycle))
 
 def testResult(condition, failureString):
     if not condition:
         print("TEST FAILED: " + failureString)
+        return False
+    return True

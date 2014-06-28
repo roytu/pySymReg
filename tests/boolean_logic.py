@@ -5,7 +5,7 @@ def testNOT():
     testNetwork(1, [], 1, [
                             ([0], [1], [lambda x: x > 0.5], "NOT Gate, with input 0"),
                             ([1], [0], [lambda x: x < 0.5], "NOT Gate, with input 1"),
-                         ])
+                         ], stopEarly=True)
 
 def testNOR():
     """ NOR Gate. 2 inputs, 1 output """
@@ -14,7 +14,7 @@ def testNOR():
                             ([0, 1], [0], [lambda x: x < 0.5], "NOR Gate, with inputs 0 1"),
                             ([1, 0], [0], [lambda x: x < 0.5], "NOR Gate, with inputs 1 0"),
                             ([1, 1], [0], [lambda x: x < 0.5], "NOR Gate, with inputs 1 1")
-                         ])
+                         ], stopEarly=True)
    
 
 def testOR():
@@ -24,7 +24,7 @@ def testOR():
                             ([0, 1], [1], [lambda x: x > 0.5], "OR Gate, with inputs 0 1"),
                             ([1, 0], [1], [lambda x: x > 0.5], "OR Gate, with inputs 1 0"),
                             ([1, 1], [1], [lambda x: x > 0.5], "OR Gate, with inputs 1 1")
-                         ])
+                         ], stopEarly=True)
 
 def testAND():
     """ AND Gate. 2 inputs, 1 output """
@@ -33,7 +33,7 @@ def testAND():
                             ([0, 1], [0], [lambda x: x < 0.5], "AND Gate, with inputs 0 1"),
                             ([1, 0], [0], [lambda x: x < 0.5], "AND Gate, with inputs 1 0"),
                             ([1, 1], [1], [lambda x: x > 0.5], "AND Gate, with inputs 1 1")
-                         ])
+                         ], stopEarly=True)
 
 def testNAND():
     """ NAND Gate. 2 inputs, 1 output """
@@ -42,7 +42,7 @@ def testNAND():
                             ([0, 1], [1], [lambda x: x > 0.5], "NAND Gate, with inputs 0 1"),
                             ([1, 0], [1], [lambda x: x > 0.5], "NAND Gate, with inputs 1 0"),
                             ([1, 1], [0], [lambda x: x < 0.5], "NAND Gate, with inputs 1 1")
-                         ])
+                         ], stopEarly=True)
 
 def testXOR():
     """ XOR Gate. 2 inputs, 2 hidden, 1 output """
@@ -51,7 +51,7 @@ def testXOR():
                             ([0, 1], [1], [lambda x: x > 0.5], "XOR Gate, with inputs 0 1"),
                             ([1, 0], [1], [lambda x: x > 0.5], "XOR Gate, with inputs 1 0"),
                             ([1, 1], [0], [lambda x: x < 0.5], "XOR Gate, with inputs 1 1")
-                         ], cycles=1000000, stopEarly=True)
+                         ], cycles=1000, stopEarly=True)
 
 def testBooleanLogic():
     testOR()
