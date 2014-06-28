@@ -5,5 +5,8 @@ class ONode(Node):
         Node.__init__(self, *args)
         self.expectationValue = expectationValue
 
+    def setExpectation(self, expectationValue):
+        self.expectationValue = expectationValue
+
     def getState(self):
         return self.state
