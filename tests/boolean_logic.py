@@ -4,8 +4,7 @@ from network import Network
 
 from test_utils import testResult
 
-def testBooleanLogic():
-    # OR
+def testOR():
     inputs = [INode(state=0), INode(state=0)]
     outputs = [ONode(expectationValue=0)]
     for i in inputs:
@@ -41,3 +40,6 @@ def testBooleanLogic():
     inputs[1].setState(1)
     net.fireAll()
     testResult(outputs[0].state > 0.5, "OR Gate, with inputs 1 1")
+
+def testBooleanLogic():
+    testOR()
