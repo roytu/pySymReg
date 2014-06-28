@@ -29,12 +29,12 @@ class Network(object):
     """
     Error propagation
     """
-    def backpropagate(self):
+    def backpropagate(self, rate):
         allNodes = self.nodes()
         for node in allNodes:
             node.computeGradient()
         for node in allNodes:
-            node.adjust(0.9)
+            node.adjust(rate)
 
     """
     Gets a list of all nodes from output to input

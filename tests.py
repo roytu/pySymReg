@@ -18,6 +18,8 @@ class Tests(object):
         net = Network(inputs, outputs)
 
         self.printResult("Input: [  0  1  ]\nOutput: [  0  ]", net)
+        net.fireAll()
+        self.printResult("Input: [  0  1  ]\nOutput: [  0.5  ]", net)
 
     def __init__(self):
         self.testBackpropagation()
