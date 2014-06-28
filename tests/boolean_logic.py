@@ -1,4 +1,4 @@
-from test_utils import testResult, testNetwork
+from test_utils import testNetwork
 
 def testOR():
     testNetwork(2, [], 1, [
