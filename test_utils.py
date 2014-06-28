@@ -8,7 +8,7 @@ def printResult(expected, actual):
     print("Actual:\n" + str(actual))
     print("")
 
-def testNetwork(inputCount, hiddensCount, outputCount, patterns, cycles=1000, learnRate=0.9, momentumRate=0.4):
+def testNetwork(inputCount, hiddensCount, outputCount, patterns, cycles=1000, learnRate=0.9, momentumRate=0.4, stopEarly=False):
     """ Tests a network based on the number of nodes provided and the test patterns.
 
     Does nothing if succeeds, else prints failure string.
@@ -20,6 +20,7 @@ def testNetwork(inputCount, hiddensCount, outputCount, patterns, cycles=1000, le
     cycles -- number of epochs to train for (default 10)
     learnRate -- rate of learning (default 0.9)
     momentumRate -- weight of previous deltas (default 0.4)
+    stopEarly -- stop when all patterns succeed (default False)
     """
     inputs = [INode() for _ in range(inputCount)]
     hiddens = [[Node() for _ in range(hn)] for hn in hiddensCount]
@@ -42,6 +43,19 @@ def testNetwork(inputCount, hiddensCount, outputCount, patterns, cycles=1000, le
                 o.setExpectation(e)
             net.fireAll()
             net.backpropagate(learnRate, momentumRate)
+        # Stop when all patterns succeed
+        if stopEarly:
+            allPatternsTrained = True
+            for (inputStates, _, conds, _) in patterns:
+                for (s, i) in zip(inputStates, inputs):
+                    i.setState(s)
+                net.fireAll()
+                for (out, cond) in zip(map(lambda o: o.state, outputs), conds):
+                    if not cond(out):
+                        allPatternsTrained = False
+                        break
+            if allPatternsTrained:
+                break
 
     # Testing
     for (inputStates, _, conds, failureString) in patterns:
