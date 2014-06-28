@@ -6,10 +6,12 @@ class Node(object):
     """ Constructs a node
 
     state -- State of the node (default 0)
-    bias -- Bias of the node to add to weighted sum (default 0)
+    bias -- Bias of the node to add to weighted sum (default [-1, 1])
     activationFn -- Activation function, must be nonlinear (default fnSigmoid(1))
     """
-    def __init__(self, state=0, bias=0, activationFn=fnSigmoid(1)):
+    def __init__(self, state=0, bias=None, activationFn=fnSigmoid(1)):
+        if bias == None:
+            bias = (random() - 0.5) * 2
         self.inputs = []
         self.outputs = []
         self.links = {}
