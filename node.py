@@ -1,3 +1,4 @@
+from random import random
 from link import Link
 from activation_functions import fnSigmoid
 
@@ -36,10 +37,12 @@ class Node(object):
         self.outputs = []
         self.links = {}
         self.bias = bias
+        self.prevDeltaBias = 0
         self.activationFn, self.derivActivationFn = activationFn
         self.state = state
 
     def addBias(self, biasInc):
+        self.prevDeltaBias = biasInc
         self.bias += biasInc
 
     def addLinkWeight(self, other, weightInc):
@@ -49,7 +52,9 @@ class Node(object):
     def potential(self):
         return sum([i.state * self.links[i].getWeight() for i in self.inputs]) + self.bias
 
-    def link(self, other, weight):
+    def link(self, other, weight=None):
+        if weight == None:
+            weight = (random() - 0.5) * 4
         # self is input, other is output
         self.outputs.append(other)
         other.inputs.append(self)
@@ -73,13 +78,13 @@ class Node(object):
         else:
             self.gradient = sum([output.gradient * self.links[output].getWeight() for output in self.outputs]) * self.derivActivationFn(self.state)
 
-    def adjust(self, rate):
+    def adjust(self, rate, momentumRate=0):
         for other in self.links.keys():
             if other not in self.inputs:
                 continue
             link = self.links[other]
-            link.addWeight(rate * self.gradient * other.state)
-        self.bias += rate * self.gradient
+            link.addWeight(rate * self.gradient * other.state + momentumRate * link.getPrevDelta())
+        self.addBias(rate * self.gradient + momentumRate * self.prevDeltaBias)
 
     # Propagates signal
     def fire(self):

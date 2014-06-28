@@ -29,6 +29,7 @@ class Link(object):
         self.node1 = node1
         self.node2 = node2
         self.weight = weight
+        self.prevDeltaWeight = 0
 
     def getNode1(self):
         return self.node1
@@ -43,4 +44,8 @@ class Link(object):
         self.weight = weight
 
     def addWeight(self, weightInc):
+        self.prevDeltaWeight = weightInc
         self.weight += weightInc
+
+    def getPrevDelta(self):
+        return self.prevDeltaWeight
