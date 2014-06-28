@@ -4,11 +4,11 @@ from activation_functions import fnSigmoid
 """
 Node object
 
-Node(state=0, threshold=0, activationFn=fnSigmoid(1))
+Node(state=0, bias=0, activationFn=fnSigmoid(1))
 Creates a node.
 
-addThreshold(thresholdInc)
-Increase the threshold by some value
+addBias(biasInc)
+Increase the bias by some value
 
 addLinkWeight(other, weight)
 Add some value to self-to-other link weight.
@@ -21,7 +21,7 @@ computeGradient()
 Compute gradient for backpropagation phase.
 
 adjust(rate)
-Backpropagation; adjust weights and threshold.  Rate must be greater than 0.
+Backpropagation; adjust weights and bias.  Rate must be greater than 0.
 
 reset()
 Reset state to 0 for this node as well as all outputs connected to this node.
@@ -31,23 +31,23 @@ Fire this state, processing inputs and setting self.state, as well as firing all
 """
 
 class Node(object):
-    def __init__(self, state=0, threshold=0, activationFn=fnSigmoid(1)):
+    def __init__(self, state=0, bias=0, activationFn=fnSigmoid(1)):
         self.inputs = []
         self.outputs = []
         self.links = {}
-        self.threshold = threshold
+        self.bias = bias
         self.activationFn, self.derivActivationFn = activationFn
         self.state = state
 
-    def addThreshold(self, thresholdInc):
-        self.threshold += thresholdInc
+    def addBias(self, biasInc):
+        self.bias += biasInc
 
     def addLinkWeight(self, other, weightInc):
         return self.links[other].setWeight(self.links[other].getWeight() + weightInc)
 
     @property
     def potential(self):
-        return sum([i.state * self.links[i].getWeight() for i in self.inputs]) + self.threshold
+        return sum([i.state * self.links[i].getWeight() for i in self.inputs]) + self.bias
 
     def link(self, other, weight):
         # self is input, other is output
@@ -79,7 +79,7 @@ class Node(object):
                 continue
             link = self.links[other]
             link.addWeight(rate * self.gradient * other.state)
-        self.threshold += rate * self.gradient
+        self.bias += rate * self.gradient
 
     # Propagates signal
     def fire(self):
