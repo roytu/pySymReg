@@ -1,13 +1,28 @@
+from inode import INode
+from onode import ONode
+from node import Node
+from network import Network
+
 def printResult(expected, actual):
     print("Expected:\n" + expected)
     print("Actual:\n" + str(actual))
     print("")
 
 def testNetwork(inputCount, hiddensCount, outputCount, patterns, trainingCycles=10, learnRate=0.9):
-    """ Tests a network based on the number of nodes provided and the test patterns. """
-    inputs = [INode()] * inputCount
-    hiddens = [[Node()] * hn for hn in hiddensCount]
-    outputs = [ONode(expectationValue=0)]
+    """ Tests a network based on the number of nodes provided and the test patterns.
+
+    Does nothing if succeeds, else prints failure string.
+
+    inputCount -- number of input nodes
+    hiddensCount -- list of number of hidden nodes for respective layers
+    outputCount -- number of output nodes
+    patterns -- training patterns ([inputs], [expected outputs], [conditions], [failure string])
+    trainingCycles -- number of epochs to train for (default 10)
+    learnRate -- rate of learning (default 0.9)
+    """
+    inputs = [INode() for _ in range(inputCount)]
+    hiddens = [[Node() for _ in range(hn)] for hn in hiddensCount]
+    outputs = [ONode() for _ in range(outputCount)]
 
     # Link each layer
     layers = [inputs] + hiddens + [outputs]
@@ -19,18 +34,18 @@ def testNetwork(inputCount, hiddensCount, outputCount, patterns, trainingCycles=
 
     # Training
     for _ in range(trainingCycles):
-        for (inps, exps, _, _) in patterns:
-            for inp in inps:
-                inputs[inp].setState(inps[inp])
-            for exp in exps:
-                outputs[exp].setExpectation(exps)
+        for (inputStates, exps, _, _) in patterns:
+            for (s, i) in zip(inputStates, inputs):
+                i.setState(s)
+            for (e, o) in zip(exps, outputs):
+                o.setExpectation(e)
             net.fireAll()
             net.backpropagate(learnRate)
 
     # Testing
-    for (inps, _, conds, failureString) in patterns:
-        for inp in inps:
-            inputs[inp].setState(inps[inp])
+    for (inputStates, _, conds, failureString) in patterns:
+        for (s, i) in zip(inputStates, inputs):
+            i.setState(s)
         net.fireAll()
         for (out, cond) in zip(map(lambda o: o.state, outputs), conds):
             testResult(cond(out), failureString)
