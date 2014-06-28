@@ -5,8 +5,9 @@ from network import Network
 from test_utils import printResult
 
 def testBackpropagation():
+    """ Basic backpropagation test """
     inputs = [INode(state=0), INode(state=1)]
-    outputs = [ONode(expectationValue=0)]
+    outputs = [ONode()]
     for i in inputs:
         for o in outputs:
             i.link(o, weight=0)
