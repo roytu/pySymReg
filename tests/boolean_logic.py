@@ -1,4 +1,5 @@
 from test_utils import testNetwork
+from activation_functions import fnTanhShifted
 
 def testNOT():
     """ NOT Gate. 1 input, 1 output """
@@ -57,7 +58,7 @@ def testXOR():
                             ([0, 1], [1], [lambda x: x > 0.5], "XOR Gate, with inputs 0 1"),
                             ([1, 0], [1], [lambda x: x > 0.5], "XOR Gate, with inputs 1 0"),
                             ([1, 1], [0], [lambda x: x < 0.5], "XOR Gate, with inputs 1 1")
-                         ], cycles=1000, stopEarly=True)
+                         ], cycles=10000, learnRate=20, momentumRate=0, stopEarly=True, activationFn=fnTanhShifted())
 
 def testBooleanLogic():
     testOR()

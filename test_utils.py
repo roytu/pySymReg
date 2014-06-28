@@ -3,12 +3,14 @@ from onode import ONode
 from node import Node
 from network import Network
 
+from activation_functions import fnSigmoid
+
 def printResult(expected, actual):
     print("Expected:\n" + expected)
     print("Actual:\n" + str(actual))
     print("")
 
-def testNetwork(inputCount, hiddensCount, outputCount, patterns, cycles=1000, learnRate=0.9, momentumRate=0.4, stopEarly=False):
+def testNetwork(inputCount, hiddensCount, outputCount, patterns, cycles=1000, learnRate=0.9, momentumRate=0.4, activationFn=fnSigmoid(1), stopEarly=False):
     """ Tests a network based on the number of nodes provided and the test patterns.
 
     Does nothing if succeeds, else prints failure string.
@@ -22,9 +24,9 @@ def testNetwork(inputCount, hiddensCount, outputCount, patterns, cycles=1000, le
     momentumRate -- weight of previous deltas (default 0.4)
     stopEarly -- stop when all patterns succeed (default False)
     """
-    inputs = [INode() for _ in range(inputCount)]
-    hiddens = [[Node() for _ in range(hn)] for hn in hiddensCount]
-    outputs = [ONode() for _ in range(outputCount)]
+    inputs = [INode(activationFn=activationFn) for _ in range(inputCount)]
+    hiddens = [[Node(activationFn=activationFn) for _ in range(hn)] for hn in hiddensCount]
+    outputs = [ONode(activationFn=activationFn) for _ in range(outputCount)]
 
     # Link each layer
     layers = [inputs] + hiddens + [outputs]
