@@ -1,5 +1,20 @@
 from test_utils import testNetwork
 
+def testNOT():
+    testNetwork(1, [], 1, [
+                            ([0], [1], [lambda x: x > 0.5], "NOT Gate, with input 0"),
+                            ([1], [0], [lambda x: x < 0.5], "NOT Gate, with input 1"),
+                         ])
+
+def testNOR():
+    testNetwork(2, [], 1, [
+                            ([0, 0], [1], [lambda x: x > 0.5], "NOR Gate, with inputs 0 0"),
+                            ([0, 1], [0], [lambda x: x < 0.5], "NOR Gate, with inputs 0 1"),
+                            ([1, 0], [0], [lambda x: x < 0.5], "NOR Gate, with inputs 1 0"),
+                            ([1, 1], [0], [lambda x: x < 0.5], "NOR Gate, with inputs 1 1")
+                         ])
+   
+
 def testOR():
     testNetwork(2, [], 1, [
                             ([0, 0], [0], [lambda x: x < 0.5], "OR Gate, with inputs 0 0"),
@@ -28,3 +43,5 @@ def testBooleanLogic():
     testOR()
     testAND()
     testXOR()
+    testNOR()
+    testNOT()
