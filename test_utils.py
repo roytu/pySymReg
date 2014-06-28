@@ -8,7 +8,7 @@ def printResult(expected, actual):
     print("Actual:\n" + str(actual))
     print("")
 
-def testNetwork(inputCount, hiddensCount, outputCount, patterns, trainingCycles=10, learnRate=0.9):
+def testNetwork(inputCount, hiddensCount, outputCount, patterns, cycles=10, learnRate=0.9):
     """ Tests a network based on the number of nodes provided and the test patterns.
 
     Does nothing if succeeds, else prints failure string.
@@ -17,7 +17,7 @@ def testNetwork(inputCount, hiddensCount, outputCount, patterns, trainingCycles=
     hiddensCount -- list of number of hidden nodes for respective layers
     outputCount -- number of output nodes
     patterns -- training patterns ([inputs], [expected outputs], [conditions], [failure string])
-    trainingCycles -- number of epochs to train for (default 10)
+    cycles -- number of epochs to train for (default 10)
     learnRate -- rate of learning (default 0.9)
     """
     inputs = [INode() for _ in range(inputCount)]
@@ -33,7 +33,7 @@ def testNetwork(inputCount, hiddensCount, outputCount, patterns, trainingCycles=
     net = Network(inputs, outputs)
 
     # Training
-    for _ in range(trainingCycles):
+    for _ in range(cycles):
         for (inputStates, exps, _, _) in patterns:
             for (s, i) in zip(inputStates, inputs):
                 i.setState(s)
