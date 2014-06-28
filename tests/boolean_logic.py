@@ -91,7 +91,7 @@ def testXOR():
             o.link(h, weight=1)
     net = Network(inputs, outputs)
 
-    for _ in range(10000):
+    for _ in range(10):
         for (i0, i1, ex) in [(0, 0, 0), (0, 1, 1), (1, 0, 1), (1, 1, 0)]:
             inputs[0].setState(i0)
             inputs[1].setState(i1)
