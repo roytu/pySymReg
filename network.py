@@ -1,8 +1,7 @@
 from queue import Queue
 
 class Network(object):
-    """
-    Create a network given a set of input and output nodes
+    """ Create a network given a set of input and output nodes
     Hidden nodes are linked among each node and not handled by the Network object
 
     Returns: Network object
@@ -11,24 +10,18 @@ class Network(object):
         self.inputNodes = inputNodes
         self.outputNodes = outputNodes
 
-    """
-    Fire the network; that is, get all input layer's output nodes to probe for input
-    """
+    """ Fire the network; that is, get all input layer's output nodes to probe for input """
     def fireAll(self):
         for i in self.inputNodes:
             for ii in i.outputs:
                 ii.fire()
 
-    """
-    Reset the state of all nodes
-    """
+    """ Reset the state of all nodes """
     def resetAll(self):
         for i in self.inputNodes:
             i.reset()
 
-    """
-    Error propagation
-    """
+    """ Error propagation """
     def backpropagate(self, rate, momentumRate):
         allNodes = self.nodes()
         for node in allNodes:
@@ -36,9 +29,7 @@ class Network(object):
         for node in allNodes:
             node.adjust(rate, momentumRate)
 
-    """
-    Gets a list of all nodes from output to input
-    """
+    """ Gets a list of all nodes from output to input """
     def nodes(self):
         frontier = Queue()
         for outputNode in self.outputNodes:

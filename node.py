@@ -2,36 +2,13 @@ from random import random
 from link import Link
 from activation_functions import fnSigmoid
 
-"""
-Node object
-
-Node(state=0, bias=0, activationFn=fnSigmoid(1))
-Creates a node.
-
-addBias(biasInc)
-Increase the bias by some value
-
-addLinkWeight(other, weight)
-Add some value to self-to-other link weight.
-
-link(other, weight)
-Link self to other, where self is input and other is output, with the given weight
-Other node is also linked to self.
-
-computeGradient()
-Compute gradient for backpropagation phase.
-
-adjust(rate)
-Backpropagation; adjust weights and bias.  Rate must be greater than 0.
-
-reset()
-Reset state to 0 for this node as well as all outputs connected to this node.
-
-fire()
-Fire this state, processing inputs and setting self.state, as well as firing all connected output nodes.
-"""
-
 class Node(object):
+    """ Constructs a node
+
+    state -- State of the node (default 0)
+    bias -- Bias of the node to add to weighted sum (default 0)
+    activationFn -- Activation function, must be nonlinear (default fnSigmoid(1))
+    """
     def __init__(self, state=0, bias=0, activationFn=fnSigmoid(1)):
         self.inputs = []
         self.outputs = []
@@ -41,17 +18,27 @@ class Node(object):
         self.activationFn, self.derivActivationFn = activationFn
         self.state = state
 
+    """ Add value to bias and store previous delta
+
+    biasInc -- amount to add to bias (can be negative)
+    """
     def addBias(self, biasInc):
         self.prevDeltaBias = biasInc
         self.bias += biasInc
 
+    """ Add value to weight and store previous delta
+
+    other -- other node in link
+    weightInc -- amount to add to weight (can be negative)
+    """
     def addLinkWeight(self, other, weightInc):
-        return self.links[other].setWeight(self.links[other].getWeight() + weightInc)
+        return self.links[other].addWeight(weightInc)
 
-    @property
-    def potential(self):
-        return sum([i.state * self.links[i].getWeight() for i in self.inputs]) + self.bias
+    """ Link self to other, where self is input and other is output
 
+    other -- output node
+    weight -- initial weight (default random [-2, 2])
+    """
     def link(self, other, weight=None):
         if weight == None:
             weight = (random() - 0.5) * 4
@@ -62,15 +49,18 @@ class Node(object):
         self.links[other] = link
         other.links[self] = link
 
+    """ Return input nodes """
     def getInputNodes(self):
         return self.inputs
 
+    """ Reset self and all child nodes to state 0 """
     # Propagates signal
     def reset(self):
         self.state = 0
         for output in outputs:
             output.reset()
 
+    """ Computes and stores gradient for backpropagation """
     def computeGradient(self):
         if self.outputs == []:
             # Output neuron
@@ -78,17 +68,20 @@ class Node(object):
         else:
             self.gradient = sum([output.gradient * self.links[output].getWeight() for output in self.outputs]) * self.derivActivationFn(self.state)
 
+    """ Adjust weights and bias based on calculated gradient """
     def adjust(self, rate, momentumRate=0):
         for other in self.links.keys():
             if other not in self.inputs:
                 continue
             link = self.links[other]
-            link.addWeight(rate * self.gradient * other.state + momentumRate * link.getPrevDelta())
+            self.addLinkWeight(other, rate * self.gradient * other.state + momentumRate * link.getPrevDelta())
         self.addBias(rate * self.gradient + momentumRate * self.prevDeltaBias)
 
+    """ Fires the node and child nodes, setting state """
     # Propagates signal
     def fire(self):
-        self.state = self.activationFn(self.potential)
+        potential = sum([i.state * self.links[i].getWeight() for i in self.inputs]) + self.bias
+        self.state = self.activationFn(potential)
         for output in self.outputs:
             output.fire()
 
