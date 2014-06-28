@@ -2,7 +2,7 @@ from inode import INode
 from onode import ONode
 from network import Network
 
-from test_utils import printResult
+from test_utils import testResult
 
 def testBooleanLogic():
     # OR
@@ -25,16 +25,19 @@ def testBooleanLogic():
     inputs[0].setState(0)
     inputs[1].setState(0)
     net.fireAll()
-    printResult("<0.5", outputs[0])
+    testResult(outputs[0].state < 0.5, "OR Gate, with inputs 0 0")
+
     inputs[0].setState(0)
     inputs[1].setState(1)
     net.fireAll()
-    printResult(">0.5", outputs[0])
+    testResult(outputs[0].state > 0.5, "OR Gate, with inputs 0 1")
+
     inputs[0].setState(1)
     inputs[1].setState(0)
     net.fireAll()
-    printResult(">0.5", outputs[0])
+    testResult(outputs[0].state > 0.5, "OR Gate, with inputs 1 0")
+
     inputs[0].setState(1)
     inputs[1].setState(1)
     net.fireAll()
-    printResult(">0.5", outputs[0])
+    testResult(outputs[0].state > 0.5, "OR Gate, with inputs 1 1")

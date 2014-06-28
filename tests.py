@@ -7,7 +7,7 @@ from tests.boolean_logic import testBooleanLogic
 
 class Tests(object):
     def __init__(self):
-        testBackpropagation()
+        #testBackpropagation()
         testBooleanLogic()
 
 if __name__ == "__main__":
