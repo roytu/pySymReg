@@ -5,33 +5,31 @@ from activation_functions import fnSigmoid
 Node object
 
 Node(state=0, threshold=0, activationFn=fnSigmoid(1))
-Creates a node with function op, which takes arbitrarily many values
-of the form (state, weight) and returns a number
+Creates a node.
 
 addThreshold(thresholdInc)
 Increase the threshold by some value
 
 addLinkWeight(other, weight)
-Add some value to self-to-other link weight
+Add some value to self-to-other link weight.
 
 link(other, weight)
-Link self to other, where self is input and other is output
-Other node is also linked to self
+Link self to other, where self is input and other is output, with the given weight
+Other node is also linked to self.
 
 computeGradient()
-Compute gradient for backpropagation phase
+Compute gradient for backpropagation phase.
 
 adjust(rate)
-Backpropagation; adjust weights
-rate > 0
+Backpropagation; adjust weights and threshold.  Rate must be greater than 0.
 
 reset()
-Reset state to 0 as well as all outputs connected to this node
+Reset state to 0 for this node as well as all outputs connected to this node.
 
 fire()
-Fire this state, processing inputs and setting self.state,
-as well as firing all connected output nodes
+Fire this state, processing inputs and setting self.state, as well as firing all connected output nodes.
 """
+
 class Node(object):
     def __init__(self, state=0, threshold=0, activationFn=fnSigmoid(1)):
         self.inputs = []
