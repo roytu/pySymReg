@@ -17,12 +17,12 @@ def testAND():
                          ])
 
 def testXOR():
-    testNetwork(2, [1], 1, [
+    testNetwork(2, [2], 1, [
                             ([0, 0], [0], [lambda x: x < 0.5], "XOR Gate, with inputs 0 0"),
                             ([0, 1], [1], [lambda x: x > 0.5], "XOR Gate, with inputs 0 1"),
                             ([1, 0], [1], [lambda x: x > 0.5], "XOR Gate, with inputs 1 0"),
                             ([1, 1], [0], [lambda x: x < 0.5], "XOR Gate, with inputs 1 1")
-                         ], cycles=50)
+                         ])
 
 def testBooleanLogic():
     testOR()
