@@ -88,7 +88,7 @@ def testXOR():
             i.link(h, weight=1)
     for o in outputs:
         for h in hidden:
-            o.link(h, weight=1)
+            h.link(o, weight=1)
     net = Network(inputs, outputs)
 
     for _ in range(10):
