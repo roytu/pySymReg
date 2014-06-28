@@ -18,6 +18,13 @@ link(other, weight)
 Link self to other, where self is input and other is output
 Other node is also linked to self
 
+computeGradient()
+Compute gradient for backpropagation phase
+
+adjust(rate)
+Backpropagation; adjust weights
+rate > 0
+
 reset()
 Reset state to 0 as well as all outputs connected to this node
 
@@ -31,7 +38,7 @@ class Node(object):
         self.outputs = []
         self.links = {}
         self.threshold = threshold
-        self.activationFn, self.delActivationFn = activationFn
+        self.activationFn, self.derivActivationFn = activationFn
         self.state = state
 
     def addThreshold(self, thresholdInc):
@@ -39,6 +46,10 @@ class Node(object):
 
     def addLinkWeight(self, other, weightInc):
         return self.links[other].setWeight(self.links[other].getWeight() + weightInc)
+
+    @property
+    def potential(self):
+        return sum([i.state * self.links[i].getWeight() for i in self.inputs]) + self.threshold
 
     def link(self, other, weight):
         # self is input, other is output
@@ -48,16 +59,33 @@ class Node(object):
         self.links[other] = link
         other.links[self] = link
 
+    def getInputNodes(self):
+        return self.inputs
+
     # Propagates signal
     def reset(self):
         self.state = 0
         for output in outputs:
             output.reset()
 
+    def computeGradient(self):
+        if self.outputs == []:
+            # Output neuron
+            self.gradient = (self.expectationValue - self.state) * self.derivActivationFn(self.state)
+        else:
+            self.gradient = sum([output.gradient * self.links[output].getWeight() for output in self.outputs]) * self.derivActivationFn(self.state)
+
+    def adjust(self, rate):
+        for other in self.links.keys():
+            if other not in self.inputs:
+                continue
+            link = self.links[other]
+            link.addWeight(rate * self.gradient * other.state)
+        self.threshold += rate * self.gradient
+
     # Propagates signal
     def fire(self):
-        potential = sum([i.state * self.links[i].getWeight() for i in self.inputs]) + self.threshold
-        self.state = self.activationFn(potential)
+        self.state = self.activationFn(self.potential)
         for output in self.outputs:
             output.fire()
 

@@ -19,6 +19,10 @@ Returns weight
 setWeight(weight)
 Sets weight
 Returns nothing
+
+addWeight(weightInc)
+Add weight
+Returns nothing
 """
 class Link(object):
     def __init__(self, node1, node2, weight):
@@ -37,3 +41,6 @@ class Link(object):
 
     def setWeight(self, weight):
         self.weight = weight
+
+    def addWeight(self, weightInc):
+        self.weight += weightInc

@@ -1,3 +1,5 @@
+from queue import Queue
+
 class Network(object):
     """
     Create a network given a set of input and output nodes
@@ -23,6 +25,32 @@ class Network(object):
     def resetAll(self):
         for i in self.inputNodes:
             i.reset()
+
+    """
+    Error propagation
+    """
+    def backpropagate(self):
+        allNodes = self.nodes()
+        for node in allNodes:
+            node.computeGradient()
+        for node in allNodes:
+            node.adjust(0.9)
+
+    """
+    Gets a list of all nodes from output to input
+    """
+    def nodes(self):
+        frontier = Queue()
+        for outputNode in self.outputNodes:
+            frontier.put(outputNode)
+        closed = []
+        while not frontier.empty():
+            node = frontier.get()
+            for inputNode in node.getInputNodes():
+                if inputNode not in closed:
+                    frontier.put(inputNode)
+            closed.append(node)
+        return closed
 
     def __str__(self):
         s = "Input: "
