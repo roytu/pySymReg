@@ -1,12 +1,10 @@
 from node import Node
 
 class ONode(Node):
-    def __init__(self, *args, expectationValue=None):
-        Node.__init__(self, *args)
-        self.expectationValue = expectationValue
-
+    """ Set the expectation value of the output node """
     def setExpectation(self, expectationValue):
         self.expectationValue = expectationValue
 
+    """ Get the state of the output node """
     def getState(self):
         return self.state
