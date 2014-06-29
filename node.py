@@ -66,7 +66,7 @@ class Node(object):
     def computeGradient(self):
         if self.outputs == []:
             # Output neuron
-            self.gradient = (self.expectationValue - self.state) * self.derivActivationFn(self.state)
+            self.gradient = (self.state - self.expectationValue) * self.derivActivationFn(self.state)
         else:
             self.gradient = sum([output.gradient * self.links[output].getWeight() for output in self.outputs]) * self.derivActivationFn(self.state)
 
@@ -76,8 +76,8 @@ class Node(object):
             if other not in self.inputs:
                 continue
             link = self.links[other]
-            self.addLinkWeight(other, rate * self.gradient * other.state + momentumRate * link.getPrevDelta())
-        self.addBias(rate * self.gradient + momentumRate * self.prevDeltaBias)
+            self.addLinkWeight(other, -rate * self.gradient * other.state + momentumRate * link.getPrevDelta())
+        self.addBias(-rate * self.gradient + momentumRate * self.prevDeltaBias)
 
     """ Fires the node and child nodes, setting state """
     # Propagates signal
