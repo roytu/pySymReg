@@ -45,6 +45,7 @@ def testNetwork(inputCount, hiddensCount, outputCount, patterns, cycles=1000, le
                 o.setExpectation(e)
             net.fireAll()
             net.backpropagate(learnRate, momentumRate)
+
         # Stop when all patterns succeed
         if stopEarly:
             allPatternsTrained = True
@@ -64,6 +65,7 @@ def testNetwork(inputCount, hiddensCount, outputCount, patterns, cycles=1000, le
         for (s, i) in zip(inputStates, inputs):
             i.setState(s)
         net.fireAll()
+        print("Input " + str(inputStates) +", Output " + str(outputs[0].state))
         for (out, cond) in zip(map(lambda o: o.state, outputs), conds):
             if not testResult(cond(out), failureString):
                 return
