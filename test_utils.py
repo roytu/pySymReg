@@ -10,7 +10,7 @@ def printResult(expected, actual):
     print("Actual:\n" + str(actual))
     print("")
 
-def testNetwork(inputCount, hiddensCount, outputCount, patterns, cycles=1000, learnRate=0.9, momentumRate=0.4, activationFn=fnSigmoid(1), stopEarly=False):
+def testNetwork(inputCount, hiddensCount, outputCount, patterns, initSetup=None, cycles=1000, learnRate=0.9, momentumRate=0.4, activationFn=fnSigmoid(1), stopEarly=False):
     """ Tests a network based on the number of nodes provided and the test patterns.
 
     Does nothing if succeeds, else prints failure string.
@@ -18,6 +18,7 @@ def testNetwork(inputCount, hiddensCount, outputCount, patterns, cycles=1000, le
     inputCount -- number of input nodes
     hiddensCount -- list of number of hidden nodes for respective layers
     outputCount -- number of output nodes
+    initSetup -- initial node weights / biases (default None, random) e.g. ([[[input1hiddens], [input2hiddens] ...], [[hidden1outputs], [hidden2outputs] ...]], [[hidden1biases], [hidden2biases], ... [outputbiases]])
     patterns -- training patterns ([inputs], [expected outputs], [conditions], [failure string])
     cycles -- number of epochs to train for (default 10)
     learnRate -- rate of learning (default 0.9)
@@ -28,12 +29,23 @@ def testNetwork(inputCount, hiddensCount, outputCount, patterns, cycles=1000, le
     hiddens = [[Node(activationFn=activationFn) for _ in range(hn)] for hn in hiddensCount]
     outputs = [ONode(activationFn=activationFn) for _ in range(outputCount)]
 
+    def initWeight(i, i0, i1):
+        if initSetup == None:
+            return None
+        else:
+            return initSetup[0][i][i0][i1]
+
+    def initBias(i, i0):
+        return initSetup[1][i][i0]
+
     # Link each layer
     layers = [inputs] + hiddens + [outputs]
-    for (layer0, layer1) in zip(layers, layers[1:]):
-        for l0 in layer0:
-            for l1 in layer1:
-                l0.link(l1)
+    for ((layer0, layer1), i) in zip(zip(layers, layers[1:]), range(len(layers))):
+        for (l0, i0) in zip(layer0, range(len(layer0))):
+            for (l1, i1) in zip(layer1, range(len(layer1))):
+                l0.link(l1, weight=initWeight(i, i0, i1))
+                if initSetup != None:
+                    l1.setBias(initBias(i, i0))
     net = Network(inputs, outputs)
 
     # Training

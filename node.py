@@ -20,6 +20,15 @@ class Node(object):
         self.activationFn, self.derivActivationFn = activationFn
         self.state = state
 
+    """ Sets the bias to value.
+
+    Warning: Invalidates delta information!
+
+    bias -- new bias value
+    """
+    def setBias(self, bias):
+        self.bias = bias
+
     """ Add value to bias and store previous delta
 
     biasInc -- amount to add to bias (can be negative)
