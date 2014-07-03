@@ -45,7 +45,7 @@ def testNetwork(inputCount, hiddensCount, outputCount, patterns, initSetup=None,
             for (l1, i1) in zip(layer1, range(len(layer1))):
                 l0.link(l1, weight=initWeight(i, i0, i1))
                 if initSetup != None:
-                    l1.setBias(initBias(i, i0))
+                    l1.setBias(initBias(i, i1))
     net = Network(inputs, outputs)
 
     # Training
