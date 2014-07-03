@@ -58,7 +58,10 @@ def testXOR():
                             ([0, 1], [1], [lambda x: x > 0.9], "XOR Gate, with inputs 0 1"),
                             ([1, 0], [1], [lambda x: x > 0.9], "XOR Gate, with inputs 1 0"),
                             ([1, 1], [0], [lambda x: x < 0.1], "XOR Gate, with inputs 1 1")
-                         ], cycles=10000, momentumRate=0, stopEarly=True)
+                         ], initSetup=(
+                                        [[[1, 1], [1, 1]], [[-1], [1]]]
+                                      , [[-1.50, -0.50], [-0.5]]
+                            ), cycles=10000, momentumRate=0, stopEarly=True)
 
 def testBooleanLogic():
     testOR()
