@@ -58,6 +58,16 @@ def testNetwork(inputCount, hiddensCount, outputCount, patterns, initSetup=None,
             net.fireAll()
             net.backpropagate(learnRate, momentumRate)
 
+        # Print weights
+        print("Hiddens: ")
+        for h in hiddens[0]:
+            for i in h.links.values():
+                print(i)
+        print("Outputs: ")
+        for o in outputs:
+            for i in o.links.values():
+                print(i)
+
         # Stop when all patterns succeed
         if stopEarly:
             allPatternsTrained = True
