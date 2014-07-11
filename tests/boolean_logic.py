@@ -59,14 +59,15 @@ def testXOR():
                             ([1, 0], [1], [lambda x: x > 0.9], "XOR Gate, with inputs 1 0"),
                             ([1, 1], [0], [lambda x: x < 0.1], "XOR Gate, with inputs 1 1")
                          ], initSetup=(
-                                        [[[1, 1], [1, 1]], [[-1], [1]]]
-                                      , [[-1.50, -0.50], [-0.5]]
-                            ), cycles=10000, momentumRate=0, stopEarly=True, activationFn=fnStep())
+                                        [[[1, 2], [1, 2]], [[-1000], [850]]]
+                                      , [[0, 0], [0]]
+                            ), stopEarly=True)
+#                            ), cycles=10000, momentumRate=0, stopEarly=True, activationFn=fnStep())
 
 def testBooleanLogic():
-    testOR()
-    testAND()
-    testNOR()
-    testNOT()
-    testNAND()
+    #testOR()
+    #testAND()
+    #testNOR()
+    #testNOT()
+    #testNAND()
     testXOR()
