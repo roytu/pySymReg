@@ -41,3 +41,7 @@ class Link(object):
     """ Gets previous weight delta """
     def getPrevDelta(self):
         return self.prevDeltaWeight
+
+    # Debugging
+    def __repr__(self):
+        return str(self.weight)
