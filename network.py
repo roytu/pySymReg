@@ -43,6 +43,18 @@ class Network(object):
             closed.append(node)
         return closed
 
+    """ Gets a list of list of nodes, by layer
+
+    Assumes all nodes in one layer are connected to all nodes in linked layers
+    """
+    def nodesByLayer(self):
+        layers = []
+        layer = self.inputNodes
+        while len(layer) > 0:
+            layers.append(layer)
+            layer = layer[0].getOutputNodes()
+        return layers
+
     def __str__(self):
         s = "Input: "
         s += "[  "
