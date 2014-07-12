@@ -3,6 +3,7 @@ from onode import ONode
 from node import Node
 from network import Network, makeNetwork
 from gui.gui import Gui
+from test_metadata import TestMetadata, defaultMetadata
 
 from activation_functions import fnSigmoid
 
@@ -11,7 +12,7 @@ def printResult(expected, actual):
     print("Actual:\n" + str(actual))
     print("")
 
-def testNetwork(inputCount, hiddensCount, outputCount, patterns, initSetup=None, cycles=1000, learnRate=0.9, momentumRate=0.4, activationFn=fnSigmoid(1), stopEarly=False, gui=False):
+def testNetwork(inputCount, hiddensCount, outputCount, patterns, initSetup=None, cycles=1000, learnRate=0.9, momentumRate=0.4, activationFn=fnSigmoid(1), stopEarly=False, gui=False, metadata=defaultMetadata):
     """ Tests a network based on the number of nodes provided and the test patterns.
 
     Does nothing if succeeds, else prints failure string.
@@ -27,12 +28,13 @@ def testNetwork(inputCount, hiddensCount, outputCount, patterns, initSetup=None,
     activationFn -- activation function for neurons (default fnSigmoid(1))
     stopEarly -- stop when all patterns succeed (default False)
     gui -- boolean for gui testing (default False)
+    metadata -- TestMetadata object (default None)
     """
     net = makeNetwork(inputCount, hiddensCount, outputCount, initSetup, activationFn)
     
     for cycle in range(1, cycles + 1):
         if gui:
-            Gui.drawNetwork(net)
+            Gui.drawNetwork(net, title=metadata.testName)
         if net.train(patterns, learnRate, momentumRate, stopEarly):
             break
         
