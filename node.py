@@ -37,6 +37,10 @@ class Node(object):
         self.prevDeltaBias = biasInc
         self.bias += biasInc
 
+    """ Get value from bias """
+    def getBias(self):
+        return self.bias
+
     """ Add value to weight and store previous delta
 
     other -- other node in link
@@ -44,6 +48,13 @@ class Node(object):
     """
     def addLinkWeight(self, other, weightInc):
         return self.links[other].addWeight(weightInc)
+
+    """ Get value from weight
+
+    other -- other node in link
+    """
+    def getLinkWeight(self, other):
+        return self.links[other].getWeight()
 
     """ Link self to other, where self is input and other is output
 
@@ -63,6 +74,10 @@ class Node(object):
     """ Return input nodes """
     def getInputNodes(self):
         return self.inputs
+
+    """ Return output nodes """
+    def getOutputNodes(self):
+        return self.outputs
 
     """ Reset self and all child nodes to state 0 """
     # Propagates signal
