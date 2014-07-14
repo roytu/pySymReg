@@ -86,13 +86,18 @@ class Node(object):
         for output in outputs:
             output.reset()
 
+    """ Compute potential (weighted sum of inputs + bias) """
+    def computePotential(self):
+        return sum([i.state * self.links[i].getWeight() for i in self.inputs]) + self.bias
+
     """ Computes and stores gradient for backpropagation """
     def computeGradient(self):
         if self.outputs == []:
             # Output neuron
-            self.gradient = (self.state - self.expectationValue) * self.derivActivationFn(self.state)
+            self.gradient = self.state - self.expectationValue
         else:
-            self.gradient = sum([output.gradient * self.links[output].getWeight() for output in self.outputs]) * self.derivActivationFn(self.state)
+            # Hidden neuron
+            self.gradient = sum([output.gradient * output.derivActivationFn(output.computePotential()) * self.links[output].getWeight() for output in self.outputs])
 
     """ Adjust weights and bias based on calculated gradient """
     def adjust(self, rate, momentumRate=0):
@@ -100,8 +105,8 @@ class Node(object):
             if other not in self.inputs:
                 continue
             link = self.links[other]
-            self.addLinkWeight(other, -rate * self.gradient * other.state + momentumRate * link.getPrevDelta())
-        self.addBias(-rate * self.gradient + momentumRate * self.prevDeltaBias)
+            self.addLinkWeight(other, -rate * self.gradient * self.derivActivationFn(self.computePotential()) * other.state + momentumRate * link.getPrevDelta())
+        self.addBias(-rate * self.gradient * self.derivActivationFn(self.computePotential()) + momentumRate * self.prevDeltaBias)
 
     """ Fires the node and child nodes, setting state """
     # Propagates signal

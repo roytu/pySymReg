@@ -59,11 +59,7 @@ def testXOR(gui=False):
                             ([0, 1], [1], [lambda x: x > 0.9], "XOR Gate, with inputs 0 1"),
                             ([1, 0], [1], [lambda x: x > 0.9], "XOR Gate, with inputs 1 0"),
                             ([1, 1], [0], [lambda x: x < 0.1], "XOR Gate, with inputs 1 1")
-                         ], stopEarly=True, gui=gui, metadata=TestMetadata("XOR Gate"))
-#                         ], initSetup=(
-#                                        [[[1, 2], [1, 2]], [[-1000], [850]]]
-#                                      , [[0, 0], [0]]
-#                            ), stopEarly=True, gui=gui)
+                         ], cycles=3000, stopEarly=True, gui=gui, metadata=TestMetadata("XOR Gate"))
 
 def testBooleanLogic(gui=False):
     testOR(gui)

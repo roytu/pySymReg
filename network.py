@@ -85,8 +85,10 @@ class Network(object):
                 i.setState(s)
             for (e, o) in zip(exps, self.outputNodes):
                 o.setExpectation(e)
+
             self.fireAll()
             self.backpropagate(learnRate, momentumRate)
+
 
         # Stop when all patterns succeed
         if stopEarly:
